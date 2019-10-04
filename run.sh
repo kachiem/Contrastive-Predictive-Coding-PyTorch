@@ -1,7 +1,18 @@
 #!/bin/bash
+
+DIRECTORY="snapshot"
+
+if [ ! -d "$DIRECTORY" ]; then
+   # make directories
+   mkdir snapshot
+   cd snapshot
+   mkdir cdc
+   cd .. 
+fi
+
 stage="$1" # parse first argument 
 
-if [ $stage -eq 0 ]; then
+if [[ $stage -eq 0 ]]; then
     # call main.py; CPC train on LibriSpeech
     CUDA_VISIBLE_DEVICES=`free-gpu` python main.py \
 	--train-raw LibriSpeech/train-Librispeech.h5 \
@@ -14,7 +25,7 @@ if [ $stage -eq 0 ]; then
 	--log-interval 50 --audio-window 20480 --timestep 12 --masked-frames 10 --n-warmup-steps 1000
 fi
 
-if [ $stage -eq 1 ]; then
+if [[ $stage -eq 1 ]]; then
     # call spk_class.py
     CUDA_VISIBLE_DEVICES=`free-gpu` python spk_class.py \
 	--raw-hdf5 LibriSpeech/train-clean-100.h5 \

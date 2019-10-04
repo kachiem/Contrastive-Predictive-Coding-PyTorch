@@ -2,9 +2,25 @@ from scipy.io import wavfile
 import os 
 import h5py
 
-trainroot = ['train-clean-100-wav/', 'train-clean-360-wav/', 'train-other-500-wav/']
-devroot = ['dev-clean/', 'dev-other/']
-testroot = ['test-clean/']
+# custom imports
+import librispect as lspct
+
+ 
+
+# trainroot = ['train-clean-100-wav/', 'train-clean-360-wav/', 'train-other-500-wav/']
+# devroot = ['dev-clean/', 'dev-other/']
+# testroot = ['test-clean/']
+
+dev_clean = lspct.paths.DEV_CLEAN
+dev_other = lspct.paths.DEV_OTHER
+train_clean_100 = lspct.paths.TRAIN_CLEAN_100
+train_clean_360 = lspct.paths.TRAIN_CLEAN_360
+train_other_500 = lspct.paths.TRAIN_OTHER_500
+test_clean = lspct.paths.TEST_CLEAN
+
+trainroot = [train_clean_100, train_clean_360, train_other_500]
+devroot = [dev_clean, dev_other]
+testroot = [test_clean] 
 
 """convert wav files to raw wave form and store them in the disc 
 """

@@ -1,3 +1,8 @@
+# data and misc.
+notebooks/
+LibriSpeech/
+train-Librispeech.h5
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -9,6 +9,7 @@ import time
 import os
 import logging
 from timeit import default_timer as timer
+import glob
 
 ## Libraries
 import numpy as np
@@ -26,6 +27,13 @@ from src.data_reader.dataset import RawDataset, ReverseRawDataset, RawXXreverseD
 from src.training_v1 import train, trainXXreverse, snapshot
 from src.validation_v1 import validation, validationXXreverse
 from src.model.model import CDCK2, CDCK5, CDCK6
+
+## LibriSpect
+import librispect as lspct
+from librispect import features
+from librispect.features import spectrogram, predict
+from librispect.utils import split_validation
+
 ############ Control Center and Hyperparameter ###############
 run_name = "cdc" + time.strftime("-%Y-%m-%d_%H_%M_%S")
 print(run_name)
@@ -106,6 +114,13 @@ def main():
               'pin_memory': False} if use_cuda else {}
 
     logger.info('===> loading train, validation and eval dataset')
+    
+    # test h5 files
+    ##args.train_list = 'LibriSpeech/training-Librispeech.h5'
+    ##args.validation_list = 'LibriSpeech/testing-Librispeech.h5'
+    ## print(args.train_list) -- "LibriSpeech/list/train.txt"
+    
+    
     training_set   = RawDataset(args.train_raw, args.train_list, args.audio_window)
     #training_set   = ReverseRawDataset(args.train_raw, args.train_list, args.audio_window)
     #training_set   = RawXXreverseDataset(args.train_raw, args.train_list, args.audio_window)
