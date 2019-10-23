@@ -342,7 +342,7 @@ class RawXXreverseDataset(data.Dataset):
         return original, original[::-1].copy() # reverse
 
 class RawDataset(data.Dataset):
-    def __init__(self, raw_file, audio_window):
+    def __init__(self, raw_file, list_file, audio_window):
         """ raw_file: train-clean-100.h5
             list_file: list/training.txt
             audio_window: 20480
@@ -351,24 +351,23 @@ class RawDataset(data.Dataset):
         self.audio_window = audio_window 
         self.utts = []
         
-        print("1 hey bb")
-        '''
         with open(list_file, "r") as f:
             temp = f.readlines()
-        print("2 hey bb")
         temp = [x.strip() for x in temp]
-        '''
+        print(len(temp))
         
         self.h5f = h5py.File(self.raw_file, 'r')
+        self.h5f = list(self.h5f.keys())
+        print(len(self.h5f))
         
-        '''
         for i in temp: # sanity check
+            print(self.h5f)
             utt_len = self.h5f[i].shape[0]
             if utt_len > 20480:
                 self.utts.append(i)
                 
         print("3 hey bb")
-        '''        
+               
         """
         with open(index_file) as f:
             content = f.readlines()

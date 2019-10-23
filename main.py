@@ -23,7 +23,7 @@ import torch.optim as optim
 
 ## Custrom Imports
 from src.logger_v1 import setup_logs
-from src.data_reader.dataset import RawDataset, ReverseRawDataset, RawXXreverseDataset
+from src.data_reader.motif_dataset import RawDataset, ReverseRawDataset, RawXXreverseDataset
 from src.training_v1 import train, trainXXreverse, snapshot
 from src.validation_v1 import validation, validationXXreverse
 from src.model.model import CDCK2, CDCK5, CDCK6
@@ -80,6 +80,7 @@ def main():
     parser.add_argument('--train-raw', required=True)
     parser.add_argument('--validation-raw', required=True)
     parser.add_argument('--eval-raw')
+    parser.add_argument('--test-train-list')
     parser.add_argument('--train-list', required=True)
     parser.add_argument('--validation-list', required=True)
     parser.add_argument('--eval-list')
@@ -109,24 +110,29 @@ def main():
     model = CDCK2(args.timestep, args.batch_size, args.audio_window).to(device)
     #model = CDCK5(args.timestep, args.batch_size, args.audio_window).to(device)
     #model = CDCK6(args.timestep, args.batch_size, args.audio_window).to(device)
+    
     ## Loading the dataset
     params = {'num_workers': 0,
               'pin_memory': False} if use_cuda else {}
 
     logger.info('===> loading train, validation and eval dataset')
     
-    # test h5 files
-    ##args.train_list = 'LibriSpeech/training-Librispeech.h5'
-    ##args.validation_list = 'LibriSpeech/testing-Librispeech.h5'
-    ## print(args.train_list) -- "LibriSpeech/list/train.txt"
-    
+    # debugging?!
+    #os.chdir('LibriSpeech/')
+    print(os.getcwd())
+    #os.chdir('list/')
+    #args.train_list = open(train_raw)
+    #print(args.train_raw)    
     
     training_set   = RawDataset(args.train_raw, args.train_list, args.audio_window)
     #training_set   = ReverseRawDataset(args.train_raw, args.train_list, args.audio_window)
     #training_set   = RawXXreverseDataset(args.train_raw, args.train_list, args.audio_window)
+    print(training_set)
     validation_set = RawDataset(args.validation_raw, args.validation_list, args.audio_window)
     #validation_set = ReverseRawDataset(args.validation_raw, args.validation_list, args.audio_window)
     #validation_set = RawXXreverseDataset(args.validation_raw, args.validation_list, args.audio_window)
+    
+    print("yooo")
     train_loader = data.DataLoader(training_set, batch_size=args.batch_size, shuffle=True, **params) # set shuffle to True
     validation_loader = data.DataLoader(validation_set, batch_size=args.batch_size, shuffle=False, **params) # set shuffle to False
     # nanxin optimizer  

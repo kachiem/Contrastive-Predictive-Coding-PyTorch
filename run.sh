@@ -15,14 +15,14 @@ stage="$1" # parse first argument
 if [[ $stage -eq 0 ]]; then
     # call main.py; CPC train on LibriSpeech
     CUDA_VISIBLE_DEVICES=`free-gpu` python main.py \
-	--train-raw LibriSpeech/train-Librispeech.h5 \
+	--train-raw ~/github/Contrastive-Predictive-Coding-PyTorch/LibriSpeech/train-Librispeech.h5 \
 	--validation-raw LibriSpeech/validation-Librispeech.h5 \
 	--eval-raw LibriSpeech/eval-Librispeech.h5 \
-	--train-list LibriSpeech/list/train.txt \
-        --validation-list LibriSpeech/list/validation.txt \
+	--train-list ~/github/Contrastive-Predictive-Coding-PyTorch/LibriSpeech/train-ID.txt \
+        --validation-list LibriSpeech/validation-ID.txt \
         --eval-list LibriSpeech/list/eval.txt \
         --logging-dir snapshot/cdc/ \
-	--log-interval 50 --audio-window 20480 --timestep 12 --masked-frames 10 --n-warmup-steps 1000
+	--log-interval 1000 --audio-window 20480 --timestep 60 --masked-frames 100 --n-warmup-steps 1000
 fi
 
 if [[ $stage -eq 1 ]]; then
